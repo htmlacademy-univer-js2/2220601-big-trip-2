@@ -20,6 +20,12 @@ const createOffer = (id) => ({
   price: getRandomNumber(offerPrice.MIN, offerPrice.MAX)
 });
 
+const createOfferByType = (id) => ({
+  id,
+  type: getRandomArrayElement(POINT_TYPES),
+  offers: Array.from({ length: getRandomNumber(2,5) }, createOffer)
+});
+
 const createPoint = (id) => {
   const randomDates = createRandomDates();
   return {
@@ -29,8 +35,7 @@ const createPoint = (id) => {
     destination: createDestination(),
     id,
     isFavorite: Boolean(getRandomNumber(0, 1)),
-    offer: createOffer(),
-    offers: Array.from({ length: getRandomNumber(2,5) }, createOffer),
+    offers: createOfferByType(),
     type: getRandomArrayElement(POINT_TYPES)
   };
 };
