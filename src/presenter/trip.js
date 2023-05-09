@@ -26,7 +26,6 @@ export default class Trip {
 
     render(new SortView(), this.#container);
     render(this.#tripList, this.#container);
-    // render(new PointEdit(this.#pointsList[0]), this.#component.element);
 
     for (let i = 0; i < this.#pointsList.length; i++) {
       this.#renderPoint(this.#pointsList[i]);
