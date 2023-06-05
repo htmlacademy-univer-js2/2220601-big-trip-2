@@ -1,6 +1,14 @@
-const getRandomNumber = (min, max) => Math.floor(Math.random() * (max - min) + min);
+const getRandomNumber = (min, max) => {
+  if (min < max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+};
 
 const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements.length - 1)];
+
+const isEscKeyDown = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
 const updateItem = (items, update) => {
   const index = items.findIndex((item) => item.id === update.id);
@@ -16,9 +24,4 @@ const updateItem = (items, update) => {
   ];
 };
 
-const isEscKeyDown = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
-
-
-export { getRandomNumber, getRandomArrayElement, updateItem, isEscKeyDown};
-
-
+export { getRandomNumber, updateItem, getRandomArrayElement, isEscKeyDown };
