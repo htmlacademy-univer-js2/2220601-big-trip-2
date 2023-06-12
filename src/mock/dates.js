@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { getRandomNumber } from '../utils/common';
+import { getRandomNumber } from '../utils/util';
 
 const getRandomDate = () => dayjs()
   .add(getRandomNumber(1, 7), 'day')
