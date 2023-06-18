@@ -39,11 +39,11 @@ export default class PointNewPresenter {
       isNewPoint: true
     });
 
-    this.#pointEditComponent.setFormSubmitHandler(this.#handleFormSubmit);
-    this.#pointEditComponent.setDeleteClickHandler(this.#handleDeleteClick);
+    this.#pointEditComponent.setFormSubmitHandler(this.#formSubmitHandler);
+    this.#pointEditComponent.setDeleteClickHandler(this.#deleteClickHandler);
 
     render(this.#pointEditComponent, this.#pointsListContainer, RenderPosition.AFTERBEGIN);
-    document.addEventListener('keydown', this.#onEscKeyDown);
+    document.addEventListener('keydown', this.#escKeyDownHandler);
   };
 
   destroy = () => {
@@ -53,7 +53,7 @@ export default class PointNewPresenter {
     this.#destroyCallback();
     remove(this.#pointEditComponent);
     this.#pointEditComponent = null;
-    document.removeEventListener('keydown', this.#onEscKeyDown);
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
   setSaving = () => {
@@ -75,14 +75,14 @@ export default class PointNewPresenter {
     this.#pointEditComponent.shake(resetFormState);
   };
 
-  #onEscKeyDown = (evt) => {
+  #escKeyDownHandler = (evt) => {
     if (isEscKeyDown(evt)) {
       evt.preventDefault();
       this.destroy();
     }
   };
 
-  #handleFormSubmit = (point) => {
+  #formSubmitHandler = (point) => {
     this.#changeData(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
@@ -90,7 +90,7 @@ export default class PointNewPresenter {
     );
   };
 
-  #handleDeleteClick = () => {
+  #deleteClickHandler = () => {
     this.destroy();
   };
 }

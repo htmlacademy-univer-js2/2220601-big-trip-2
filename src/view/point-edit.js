@@ -193,6 +193,54 @@ export default class PointEditView extends AbstractStatefulView {
     }
   };
 
+  #setInnerHandlers = () => {
+    this.element.querySelector('.event__type-list').addEventListener('change', this.#pointTypeChangeHandler);
+    this.element.querySelector('.event__input--destination').addEventListener('change', this.#pointDestinationChangeHandler);
+    if (this.#offersByType && this.#offersByType.offers.length > 0) {
+      this.element.querySelector('.event__available-offers').addEventListener('change', this.#offersChangeHandler);
+    }
+    this.element.querySelector('.event__input--price').addEventListener('change', this.#pointPriceChangeHandler);
+  };
+
+  #setOuterHandlers = () => {
+    if (!this.#isNewPoint) {
+      this.setCloseClickHandler(this._callback.closeClick);
+    }
+    this.setFormSubmitHandler(this._callback.formSubmit);
+    this.setDeleteClickHandler(this._callback.deleteClick);
+  };
+
+  #setDatepickerFrom = () => {
+    if (this._state.dateFrom) {
+      this.#datepicker = flatpickr(
+        this.element.querySelector('#event-start-time-1'),
+        {
+          enableTime: true,
+          dateFormat: 'd/m/y H:i',
+          'time_24hr': true,
+          defaultDate: this._state.dateFrom,
+          onChange: this.#pointFromDateChangeHandler,
+        },
+      );
+    }
+  };
+
+  #setDatepickerTo = () => {
+    if (this._state.dateTo) {
+      this.#datepicker = flatpickr(
+        this.element.querySelector('#event-end-time-1'),
+        {
+          enableTime: true,
+          dateFormat: 'd/m/y H:i',
+          'time_24hr': true,
+          defaultDate: this._state.dateTo,
+          minDate: this._state.dateFrom,
+          onChange: this.#pointToDateChangeHandler,
+        },
+      );
+    }
+  };
+
   #pointDestinationChangeHandler = (evt) => {
     evt.preventDefault();
     const destination = this.#destination.find((d) => d.name === evt.target.value);
@@ -245,54 +293,6 @@ export default class PointEditView extends AbstractStatefulView {
   #formDeleteClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.deleteClick(PointEditView.parseStateToPoint(this._state));
-  };
-
-  #setInnerHandlers = () => {
-    this.element.querySelector('.event__type-list').addEventListener('change', this.#pointTypeChangeHandler);
-    this.element.querySelector('.event__input--destination').addEventListener('change', this.#pointDestinationChangeHandler);
-    if (this.#offersByType && this.#offersByType.offers.length > 0) {
-      this.element.querySelector('.event__available-offers').addEventListener('change', this.#offersChangeHandler);
-    }
-    this.element.querySelector('.event__input--price').addEventListener('change', this.#pointPriceChangeHandler);
-  };
-
-  #setOuterHandlers = () => {
-    if (!this.#isNewPoint) {
-      this.setCloseClickHandler(this._callback.closeClick);
-    }
-    this.setFormSubmitHandler(this._callback.formSubmit);
-    this.setDeleteClickHandler(this._callback.deleteClick);
-  };
-
-  #setDatepickerFrom = () => {
-    if (this._state.dateFrom) {
-      this.#datepicker = flatpickr(
-        this.element.querySelector('#event-start-time-1'),
-        {
-          enableTime: true,
-          dateFormat: 'd/m/y H:i',
-          'time_24hr': true,
-          defaultDate: this._state.dateFrom,
-          onChange: this.#pointFromDateChangeHandler,
-        },
-      );
-    }
-  };
-
-  #setDatepickerTo = () => {
-    if (this._state.dateTo) {
-      this.#datepicker = flatpickr(
-        this.element.querySelector('#event-end-time-1'),
-        {
-          enableTime: true,
-          dateFormat: 'd/m/y H:i',
-          'time_24hr': true,
-          defaultDate: this._state.dateTo,
-          minDate: this._state.dateFrom,
-          onChange: this.#pointToDateChangeHandler,
-        },
-      );
-    }
   };
 
   #pointFromDateChangeHandler = ([userDate]) => {
